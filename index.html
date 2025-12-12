@@ -21,433 +21,1037 @@
         };
     </script>
     <style>
+        :root {
+            --primary: #1a237e;
+            --secondary: #0d47a1;
+            --accent: #0277bd;
+            --light-blue: #e3f2fd;
+            --dark-blue: #0a2463;
+            --text: #2c3e50;
+            --light-gray: #f8f9fa;
+            --border: #b0bec5;
+            --success: #2e7d32;
+            --grid-color: #e0e0e0;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Latin Modern Roman', 'TeX Gyre Termes', 'STIX Two Text', Georgia, serif;
+            background-color: var(--light-blue);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 20px;
             max-width: 1200px;
             margin: 0 auto;
-            padding: 20px;
-            background-color: #f5f5f5;
+        }
+        
+        .header {
+            text-align: center;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+            border-bottom: 3px solid var(--primary);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .header h1 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 0.5rem;
+        }
+        
+        .header .subtitle {
+            font-size: 1.2rem;
+            color: var(--accent);
+            font-style: italic;
+        }
+        
+        .container {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+        
+        @media (min-width: 992px) {
+            .container {
+                flex-direction: row;
+            }
+        }
+        
+        .content-section {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .visualization-section {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.08);
+            border-left: 4px solid var(--accent);
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
         }
         
         .section-title {
-            color: #7850a0;
-            font-size: 1.8em;
-            font-weight: bold;
-            margin-top: 30px;
-            margin-bottom: 15px;
             display: flex;
             align-items: center;
+            margin-bottom: 1.2rem;
+            color: var(--primary);
+            font-size: 1.6rem;
+            font-weight: 700;
         }
         
-        .arrow {
-            color: #7850a0;
-            font-size: 2em;
+        .section-title .icon {
             margin-right: 10px;
+            font-size: 1.8rem;
+            color: var(--accent);
         }
         
-        .content {
-            background-color: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
-            line-height: 1.8;
+        .theorem {
+            background: var(--light-gray);
+            border: 2px solid var(--border);
+            border-radius: 6px;
+            padding: 1.2rem;
+            margin: 1.2rem 0;
+            position: relative;
         }
         
-        .info-box {
-            background-color: #f0f0f0;
-            border: 3px solid #c04040;
-            border-radius: 8px;
-            padding: 15px;
-            margin: 20px 0;
-            display: flex;
-            align-items: center;
-        }
-        
-        .info-icon {
-            background-color: #c04040;
-            color: white;
+        .theorem::before {
+            content: '📘';
+            position: absolute;
+            left: -15px;
+            top: -15px;
+            background: white;
             border-radius: 50%;
             width: 30px;
             height: 30px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: bold;
-            font-style: italic;
-            margin-right: 15px;
-            flex-shrink: 0;
+            border: 2px solid var(--accent);
         }
         
-        .container {
+        .theorem-title {
+            color: var(--primary);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
             display: flex;
-            gap: 30px;
-            align-items: flex-start;
-            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px;
         }
         
-        .text-content {
-            flex: 1;
-            min-width: 300px;
+        .formula {
+            font-family: 'Latin Modern Math', 'STIX Two Math', Cambria, serif;
+            background: #f5f7ff;
+            padding: 1rem;
+            border-radius: 4px;
+            margin: 1rem 0;
+            border-left: 3px solid var(--success);
+            overflow-x: auto;
         }
         
-        .figure-container {
-            flex: 0 0 500px;
-            background-color: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        .formula .math {
+            font-size: 1.1rem;
+        }
+        
+        .visualization-container {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.08);
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+        }
+        
+        .visualization-title {
+            text-align: center;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            font-size: 1.4rem;
+            font-weight: 700;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--light-blue);
         }
         
         #svg-container {
-            border: 1px solid #ddd;
-            border-radius: 5px;
+            width: 100%;
+            height: 450px;
+            border: 1px solid var(--border);
+            border-radius: 4px;
             overflow: hidden;
-            background-color: white;
+            background: #fafcff;
         }
         
-        svg text {
-            user-select: none;
-            pointer-events: none;
+        .coordinate-display {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+            padding: 1rem;
+            background: linear-gradient(135deg, #e3f2fd, #f0f7ff);
+            border-radius: 6px;
         }
         
-        .draggable {
-            cursor: move;
-        }
-        
-        .instructions {
-            margin-top: 10px;
-            font-size: 0.9em;
-            color: #666;
+        .coord-group {
             text-align: center;
         }
         
+        .coord-label {
+            font-size: 0.9rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        
+        .coord-value {
+            font-size: 1.2rem;
+            font-family: 'Latin Modern Math', monospace;
+            color: var(--dark-blue);
+            font-weight: 700;
+        }
+        
+        .instructions {
+            text-align: center;
+            margin-top: 1rem;
+            padding: 0.8rem;
+            background: var(--light-blue);
+            border-radius: 6px;
+            font-size: 0.9rem;
+            color: var(--dark-blue);
+        }
+        
+        .instructions i {
+            color: var(--accent);
+        }
+        
+        .calculator-section {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, #e8f5e9, #f1f8e9);
+            border-radius: 8px;
+            border: 2px solid #4caf50;
+        }
+        
+        .calculator-title {
+            color: #2e7d32;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .calculator-steps {
+            background: white;
+            padding: 1.2rem;
+            border-radius: 6px;
+            margin-top: 1rem;
+            border-left: 3px solid #4caf50;
+        }
+        
+        .calculator-steps ol {
+            margin-left: 1.5rem;
+        }
+        
+        .calculator-steps li {
+            margin-bottom: 0.8rem;
+            line-height: 1.8;
+        }
+        
+        .key {
+            display: inline-block;
+            padding: 2px 8px;
+            background: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: monospace;
+            font-weight: bold;
+            margin: 0 2px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+        
+        .key-sequence {
+            background: #f0f7ff;
+            padding: 8px 12px;
+            border-radius: 4px;
+            margin: 5px 0;
+            border-left: 3px solid #0277bd;
+            font-family: monospace;
+        }
+        
+        .video-section {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, #fff3e0, #ffecb3);
+            border-radius: 8px;
+            border: 2px solid #ff9800;
+            text-align: center;
+        }
+        
+        .video-title {
+            color: #ef6c00;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .video-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 24px;
+            background: #ff9800;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+        
+        .video-link:hover {
+            background: #f57c00;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        .note {
+            background: #fff8e1;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+            border-left: 3px solid #ffb300;
+            font-size: 0.9em;
+        }
+        
+        .angle-unit-info {
+            background: #e8f5e9;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+            border-left: 3px solid #4caf50;
+        }
+        
         @media (max-width: 768px) {
-            .container {
-                flex-direction: column;
+            body {
+                padding: 10px;
             }
-            .figure-container {
-                flex: 1 1 auto;
-                width: 100%;
+            
+            .header h1 {
+                font-size: 2rem;
             }
+            
+            .card {
+                padding: 1rem;
+            }
+            
+            .section-title {
+                font-size: 1.4rem;
+            }
+            
+            .visualization-container {
+                position: static;
+            }
+            
+            #svg-container {
+                height: 350px;
+            }
+            
+            .coordinate-display {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            #svg-container {
+                height: 300px;
+            }
+            
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .coord-value {
+                font-size: 1rem;
+            }
+        }
+        
+        /* Styles pour le SVG */
+        .grid-line {
+            stroke: var(--grid-color);
+            stroke-width: 0.5;
+        }
+        
+        .axis {
+            stroke: var(--dark-blue);
+            stroke-width: 1.5;
+        }
+        
+        .axis-label {
+            fill: var(--primary);
+            font-size: 16px;
+            font-weight: 600;
+        }
+        
+        .vector {
+            stroke: var(--accent);
+            stroke-width: 1.5;
+        }
+        
+        .vector-label {
+            fill: var(--accent);
+            font-size: 13px;
+            font-weight: 600;
+            font-style: italic;
+        }
+        
+        .point-m {
+            fill: var(--primary);
+            stroke: white;
+            stroke-width: 2;
+            cursor: move;
+            transition: r 0.2s;
+        }
+        
+        .point-m:hover {
+            r: 10;
+        }
+        
+        .projection-line {
+            stroke: var(--secondary);
+            stroke-width: 1;
+            stroke-dasharray: 5,3;
+        }
+        
+        .projection-point {
+            fill: var(--success);
+        }
+        
+        .radius-line {
+            stroke: var(--accent);
+            stroke-width: 2;
+        }
+        
+        .arc {
+            fill: none;
+            stroke: var(--accent);
+            stroke-width: 1.5;
+        }
+        
+        .coord-text {
+            fill: var(--primary);
+            font-size: 13px;
+            font-weight: 600;
+        }
+        
+        .angle-text {
+            fill: var(--accent);
+            font-size: 14px;
+            font-style: italic;
+            font-weight: 700;
+        }
+        
+        .radius-text {
+            fill: var(--accent);
+            font-size: 13px;
+            font-weight: 700;
+        }
+        
+        .repere-label {
+            fill: var(--dark-blue);
+            font-size: 11px;
+            font-weight: 600;
+            font-style: italic;
+        }
+        
+        .origin-label {
+            fill: var(--primary);
+            font-size: 15px;
+            font-weight: 700;
+        }
+        
+        .grid-dense {
+            stroke: rgba(224, 224, 224, 0.3);
+            stroke-width: 0.3;
+        }
+        
+        .grid-main {
+            stroke: rgba(224, 224, 224, 0.8);
+            stroke-width: 0.8;
+        }
+        
+        .thin-arrow {
+            stroke-width: 1;
+        }
+        
+        .vector-om {
+            stroke: var(--accent);
+            stroke-width: 2;
+            marker-end: url(#very-thin-arrow);
         }
     </style>
 </head>
 <body>
-    <h1 style="text-align: center; color: #7850a0;">Coordonnées dans le plan</h1>
-    
-    <div class="content">
-        <div class="section-title">
-            <span class="arrow">➜</span>
-            Coordonnées cartésiennes
-        </div>
-        
-        <p>
-            Tout point M du plan est repéré par un unique couple $(x;y)$ de nombres réels tels que 
-            $\overrightarrow{\text{OM}} = x\,\vec{i} + y\,\vec{j}$.
-            $(x;y)$ est appelé couple de <strong>coordonnées cartésiennes</strong> du point M dans le repère 
-            $(\text{O};\vec{i},\vec{j})$.
-        </p>
-        
-        <div class="info-box">
-            <div class="info-icon">i</div>
-            <div>
-                Si $\text{A}(x_A;y_A)$ et $\text{B}(x_B;y_B)$, alors 
-                $\text{AB} = \sqrt{(x_B - x_A)^2 + (y_B - y_A)^2}$
-            </div>
-        </div>
+    <div class="header">
+        <h1>Coordonnées dans le plan</h1>
+        <div class="subtitle">Cartésiennes et polaires - Vecteurs et points</div>
     </div>
     
     <div class="container">
-        <div class="text-content">
-            <div class="content">
+        <div class="content-section">
+            <div class="card">
                 <div class="section-title">
-                    <span class="arrow">➜</span>
-                    Coordonnées polaires
+                    <span class="icon">📐</span>
+                    Coordonnées cartésiennes
+                </div>
+                <p>
+                    Tout point $M$ du plan est repéré par un unique couple $(x;y)$ de nombres réels tels que 
+                    $\overrightarrow{\mathrm{OM}} = x\,\vec{i} + y\,\vec{j}$.
+                    $(x;y)$ est appelé couple de <strong>coordonnées cartésiennes</strong> du point $M$ dans le repère 
+                    $(\mathrm{O};\vec{i},\vec{j})$.
+                </p>
+                
+                <div class="theorem">
+                    <div class="theorem-title">
+                        <span>📍</span>
+                        Coordonnées d'un vecteur
+                    </div>
+                    <p>
+                        Dans un repère cartésien, un vecteur $\vec{v}$ a pour coordonnées $(x,y)$ si :
+                        $$\vec{v} = x\vec{i} + y\vec{j}$$
+                        Si $A(x_A;y_A)$ et $B(x_B;y_B)$, alors :
+                        $$\overrightarrow{AB} = (x_B - x_A)\vec{i} + (y_B - y_A)\vec{j}$$
+                    </p>
                 </div>
                 
-                <p>
-                    Tout point M du plan distinct de O est repéré par un couple $(r;\theta)$ de 
-                    nombres réels avec $r>0$, appelé couple de <strong>coordonnées polaires</strong> du 
-                    point M, tel que $r = \text{OM}$ et $\theta = (\vec{i};\overrightarrow{\text{OM}})$ 
-                    (en radians).
-                </p>
+                <div class="theorem">
+                    <div class="theorem-title">
+                        <span>📏</span>
+                        Distance entre deux points
+                    </div>
+                    <div class="formula">
+                        <div class="math">
+                            Si $A(x_A;y_A)$ et $B(x_B;y_B)$, alors :
+                            $$AB = \sqrt{(x_B - x_A)^2 + (y_B - y_A)^2}$$
+                        </div>
+                    </div>
+                </div>
             </div>
             
-            <div class="content">
+            <div class="card">
                 <div class="section-title">
-                    <span class="arrow">➜</span>
-                    Lien entre coordonnées cartésiennes et coordonnées polaires
+                    <span class="icon">🎯</span>
+                    Coordonnées polaires
+                </div>
+                <p>
+                    Tout point $M$ du plan distinct de $O$ est repéré par un couple $(r;\theta)$ de 
+                    nombres réels avec $r>0$, appelé couple de <strong>coordonnées polaires</strong> du 
+                    point $M$, tel que $r = \mathrm{OM}$ et $\theta = (\vec{i};\overrightarrow{\mathrm{OM}})$.
+                </p>
+                
+                <div class="angle-unit-info">
+                    <strong>Unités d'angle :</strong> L'angle $\theta$ peut être exprimé en degrés ($°$) ou en radians (rad).
+                    $$1 \text{ rad} = \frac{180}{\pi}° \approx 57.3°$$
+                    $$180° = \pi \text{ rad}$$
+                    Sur la figure interactive, $\theta$ est affiché en degrés, mais les formules fonctionnent avec les deux unités.
                 </div>
                 
+                <div class="theorem">
+                    <div class="theorem-title">
+                        <span>🔢</span>
+                        Coordonnées polaires d'un vecteur
+                    </div>
+                    <p>
+                        Un vecteur $\vec{v}$ peut également être représenté en coordonnées polaires $(r,\theta)$ où :
+                        <ul style="margin-left: 20px; margin-top: 10px;">
+                            <li>$r = \|\vec{v}\|$ est la norme du vecteur</li>
+                            <li>$\theta$ est l'angle que fait le vecteur avec l'axe des abscisses (en degrés ou radians)</li>
+                        </ul>
+                        On a alors : $\vec{v} = (r\cos\theta, r\sin\theta)$ en coordonnées cartésiennes.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="section-title">
+                    <span class="icon">🔄</span>
+                    Relations de passage
+                </div>
                 <p>
-                    Si un point M distinct de O a pour coordonnées cartésiennes $(x;y)$ et pour 
+                    Si un point $M$ distinct de $O$ a pour coordonnées cartésiennes $(x;y)$ et pour 
                     coordonnées polaires $(r;\theta)$, alors :
-                    $r = \sqrt{x^2 + y^2}$ ; $x = r\cos\theta$ et $y = r\sin\theta$.
                 </p>
+                
+                <div class="formula">
+                    <div class="math">
+                        <strong>Cartésiennes → Polaires</strong><br>
+                        $$r = \sqrt{x^2 + y^2}$$
+                        $$\theta = \arctan\left(\frac{y}{x}\right) \quad (\text{avec ajustement de quadrant})$$
+                    </div>
+                </div>
+                
+                <div class="formula">
+                    <div class="math">
+                        <strong>Polaires → Cartésiennes</strong><br>
+                        $$x = r\cos\theta$$
+                        $$y = r\sin\theta$$
+                        <em>Note : $\theta$ peut être en degrés ou radians selon le contexte.</em>
+                    </div>
+                </div>
+                
+                <div class="calculator-section">
+                    <div class="calculator-title">
+                        <span>🧮</span> Conversion avec calculatrice Casio fx-92
+                    </div>
+                    
+                    <div class="calculator-steps">
+                        <div class="note">
+                            <strong>Choix de l'unité d'angle :</strong>
+                            <ul style="margin-left: 20px; margin-top: 5px;">
+                                <li><span class="key">MODE</span> <span class="key">4</span> : Degrés ($°$)</li>
+                                <li><span class="key">MODE</span> <span class="key">5</span> : Radians (rad)</li>
+                                <li>Choisir l'unité correspondant à votre $\theta$</li>
+                            </ul>
+                        </div>
+                        
+                        <strong>1. Conversion Polaires → Cartésiennes :</strong>
+                        <ol>
+                            <li>Réglez l'unité d'angle (Deg ou Rad selon $\theta$)</li>
+                            <li>Appuyez sur <span class="key">OPTN</span></li>
+                            <li>Sélectionnez <span class="key">▶</span> (pour aller à la page 2)</li>
+                            <li>Sélectionnez <span class="key">4</span> (ANGL)</li>
+                            <li>Sélectionnez <span class="key">1</span> (Pol( ))</li>
+                            <li>Entrez les coordonnées polaires : <span class="key">r</span> <span class="key">,</span> <span class="key">θ</span> <span class="key">)</span> <span class="key">EXE</span></li>
+                            <li>Appuyez sur <span class="key">RCL</span> <span class="key">F</span> pour obtenir x</li>
+                            <li>Appuyez sur <span class="key">RCL</span> <span class="key">E</span> pour obtenir y</li>
+                        </ol>
+                        
+                        <div class="key-sequence">
+                            Exemple (5, 53°) : Pol(5,53) → EXE → RCL F → x = 3 → RCL E → y = 4
+                        </div>
+                        
+                        <strong>2. Conversion Cartésiennes → Polaires :</strong>
+                        <ol>
+                            <li>Réglez l'unité d'angle (Deg ou Rad selon l'unité souhaitée pour $\theta$)</li>
+                            <li>Appuyez sur <span class="key">OPTN</span></li>
+                            <li>Sélectionnez <span class="key">▶</span> (pour aller à la page 2)</li>
+                            <li>Sélectionnez <span class="key">4</span> (ANGL)</li>
+                            <li>Sélectionnez <span class="key">2</span> (Rec( ))</li>
+                            <li>Entrez les coordonnées cartésiennes : <span class="key">x</span> <span class="key">,</span> <span class="key">y</span> <span class="key">)</span> <span class="key">EXE</span></li>
+                            <li>Appuyez sur <span class="key">RCL</span> <span class="key">F</span> pour obtenir r</li>
+                            <li>Appuyez sur <span class="key">RCL</span> <span class="key">E</span> pour obtenir $\theta$</li>
+                        </ol>
+                        
+                        <div class="key-sequence">
+                            Exemple (3, 4) : Rec(3,4) → EXE → RCL F → r = 5 → RCL E → θ = 53.13° (ou 0.927 rad)
+                        </div>
+                        
+                        <div class="note">
+                            <strong>Mémo :</strong> 
+                            <ul style="margin-left: 20px; margin-top: 5px;">
+                                <li><strong>Pol(</strong> → Polaires vers Cartésiennes</li>
+                                <li><strong>Rec(</strong> → Cartésiennes vers Polaires</li>
+                                <li><strong>RCL F</strong> → Première coordonnée</li>
+                                <li><strong>RCL E</strong> → Deuxième coordonnée</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         
-        <div class="figure-container">
-            <h3 style="text-align: center; color: #7850a0;">Figure interactive</h3>
-            <div id="svg-container"></div>
-            <div class="instructions">
-                💡 <strong>Déplacer le point M</strong> : cliquer-glisser directement sur le point M
+        <div class="visualization-section">
+            <div class="visualization-container">
+                <div class="visualization-title">Représentation interactive</div>
+                
+                <div id="svg-container"></div>
+                
+                <div class="coordinate-display">
+                    <div class="coord-group">
+                        <div class="coord-label">Point M cartésien</div>
+                        <div class="coord-value" id="cartesian-coords">(0.00, 0.00)</div>
+                    </div>
+                    <div class="coord-group">
+                        <div class="coord-label">Point M polaire</div>
+                        <div class="coord-value" id="polar-coords">(0.00, 0.00°)</div>
+                    </div>
+                    <div class="coord-group">
+                        <div class="coord-label">Vecteur $\vec{OM}$</div>
+                        <div class="coord-value" id="vector-coords">(0.00, 0.00)</div>
+                    </div>
+                </div>
+                
+                <div class="instructions">
+                    <i>💡 Déplacer le point M directement sur le graphique</i>
+                </div>
+                
+                <div class="video-section">
+                    <div class="video-title">🎥 Vidéo explicative</div>
+                    <p>Pour voir la méthode de conversion sur calculatrice Casio fx-92 en vidéo :</p>
+                    <a href="https://www.youtube.com/watch?v=iKV5fWz1w8g" target="_blank" class="video-link">
+                        <span>▶️</span>
+                        Voir la vidéo sur YouTube
+                    </a>
+                    <p style="margin-top: 10px; font-size: 0.9em; color: #666;">
+                        Tutoriel Casio fx-92 : Conversion coordonnées polaires/cartésiennes
+                    </p>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
-        // Configuration
-        const width = 500;
-        const height = 400;
-        // Centrer le repère
-        const centerX = width / 2;
-        const centerY = height / 2;
+        // Variables globales
+        let svg, svgSize, centerX, centerY;
+        let r = 120, thetaDeg = 40;
         
-        // Création du SVG
-        const svg = d3.select("#svg-container")
-            .append("svg")
-            .attr("width", width)
-            .attr("height", height);
-        
-        // Grille centrée
-        const gridGroup = svg.append("g").attr("class", "grid");
-        
-        // Lignes verticales
-        for (let i = -Math.floor(width/60); i <= Math.floor(width/60); i++) {
-            const x = centerX + i * 30;
-            gridGroup.append("line")
-                .attr("x1", x).attr("y1", 0)
-                .attr("x2", x).attr("y2", height)
-                .attr("stroke", "#e0e0e0")
-                .attr("stroke-width", 0.5)
-                .attr("stroke-dasharray", "2,2");
+        // Initialisation du SVG
+        function initSVG() {
+            const container = document.getElementById('svg-container');
+            svgSize = {
+                width: container.clientWidth,
+                height: container.clientHeight
+            };
+            
+            centerX = svgSize.width / 2;
+            centerY = svgSize.height / 2;
+            
+            // Créer ou mettre à jour le SVG
+            if (!svg) {
+                svg = d3.select("#svg-container")
+                    .append("svg")
+                    .attr("width", svgSize.width)
+                    .attr("height", svgSize.height);
+            } else {
+                svg.attr("width", svgSize.width)
+                   .attr("height", svgSize.height);
+            }
+            
+            // Nettoyer le SVG
+            svg.selectAll("*").remove();
+            
+            // Créer les marqueurs de flèches fines
+            const defs = svg.append("defs");
+            
+            // Flèche fine pour les axes
+            defs.append("marker")
+                .attr("id", "thin-arrow")
+                .attr("markerWidth", 6)
+                .attr("markerHeight", 6)
+                .attr("refX", 5)
+                .attr("refY", 3)
+                .attr("orient", "auto")
+                .append("path")
+                .attr("d", "M0,0 L0,6 L6,3 Z")
+                .attr("fill", "#0d47a1");
+            
+            // Flèche très fine pour les vecteurs
+            defs.append("marker")
+                .attr("id", "very-thin-arrow")
+                .attr("markerWidth", 4)
+                .attr("markerHeight", 4)
+                .attr("refX", 3.5)
+                .attr("refY", 2)
+                .attr("orient", "auto")
+                .append("path")
+                .attr("d", "M0,0 L0,4 L4,2 Z")
+                .attr("fill", "#0277bd");
+            
+            // Dessiner le quadrillage
+            drawGrid();
+            
+            // Dessiner le repère
+            drawRepere();
+            
+            // Initialiser les éléments interactifs
+            initInteractiveElements();
+            
+            // Mettre à jour la visualisation
+            updateVisualization();
         }
         
-        // Lignes horizontales
-        for (let i = -Math.floor(height/60); i <= Math.floor(height/60); i++) {
-            const y = centerY + i * 30;
-            gridGroup.append("line")
-                .attr("x1", 0).attr("y1", y)
-                .attr("x2", width).attr("y2", y)
-                .attr("stroke", "#e0e0e0")
-                .attr("stroke-width", 0.5)
-                .attr("stroke-dasharray", "2,2");
+        // Dessiner le quadrillage
+        function drawGrid() {
+            const gridSize = 20; // Espacement entre les lignes
+            const gridGroup = svg.append("g").attr("class", "grid");
+            
+            // Calculer le nombre de lignes nécessaires
+            const xLines = Math.ceil(svgSize.width / gridSize);
+            const yLines = Math.ceil(svgSize.height / gridSize);
+            
+            // Lignes verticales (fines)
+            for (let i = -xLines; i <= xLines; i++) {
+                const x = centerX + i * gridSize;
+                gridGroup.append("line")
+                    .attr("x1", x).attr("y1", 0)
+                    .attr("x2", x).attr("y2", svgSize.height)
+                    .attr("class", "grid-dense");
+            }
+            
+            // Lignes horizontales (fines)
+            for (let i = -yLines; i <= yLines; i++) {
+                const y = centerY + i * gridSize;
+                gridGroup.append("line")
+                    .attr("x1", 0).attr("y1", y)
+                    .attr("x2", svgSize.width).attr("y2", y)
+                    .attr("class", "grid-dense");
+            }
+            
+            // Lignes principales (tous les 5 carreaux)
+            const mainGridSize = gridSize * 5;
+            const mainXLines = Math.ceil(svgSize.width / mainGridSize);
+            const mainYLines = Math.ceil(svgSize.height / mainGridSize);
+            
+            // Lignes verticales principales
+            for (let i = -mainXLines; i <= mainXLines; i++) {
+                const x = centerX + i * mainGridSize;
+                gridGroup.append("line")
+                    .attr("x1", x).attr("y1", 0)
+                    .attr("x2", x).attr("y2", svgSize.height)
+                    .attr("class", "grid-main");
+                
+                // Graduations sur l'axe x
+                if (i !== 0) {
+                    gridGroup.append("text")
+                        .attr("x", x)
+                        .attr("y", centerY + 15)
+                        .attr("text-anchor", "middle")
+                        .attr("class", "repere-label")
+                        .text(i * 5);
+                }
+            }
+            
+            // Lignes horizontales principales
+            for (let i = -mainYLines; i <= mainYLines; i++) {
+                const y = centerY + i * mainGridSize;
+                gridGroup.append("line")
+                    .attr("x1", 0).attr("y1", y)
+                    .attr("x2", svgSize.width).attr("y2", y)
+                    .attr("class", "grid-main");
+                
+                // Graduations sur l'axe y (sauf pour y=0)
+                if (i !== 0) {
+                    gridGroup.append("text")
+                        .attr("x", centerX - 12)
+                        .attr("y", y + 4)
+                        .attr("text-anchor", "end")
+                        .attr("class", "repere-label")
+                        .text(-i * 5);
+                }
+            }
         }
         
-        // Définition des flèches fines
-        const defs = svg.append("defs");
+        // Dessiner le repère
+        function drawRepere() {
+            // Axe des x avec flèche fine
+            svg.append("line")
+                .attr("x1", 20).attr("y1", centerY)
+                .attr("x2", svgSize.width - 20).attr("y2", centerY)
+                .attr("class", "axis thin-arrow")
+                .attr("marker-end", "url(#thin-arrow)");
+            
+            // Axe des y avec flèche fine
+            svg.append("line")
+                .attr("x1", centerX).attr("y1", svgSize.height - 20)
+                .attr("x2", centerX).attr("y2", 20)
+                .attr("class", "axis thin-arrow")
+                .attr("marker-end", "url(#thin-arrow)");
+            
+            // Labels des axes
+            svg.append("text")
+                .attr("x", svgSize.width - 20)
+                .attr("y", centerY - 8)
+                .attr("class", "axis-label")
+                .text("x");
+            
+            svg.append("text")
+                .attr("x", centerX + 12)
+                .attr("y", 25)
+                .attr("class", "axis-label")
+                .text("y");
+            
+            // Origine O
+            svg.append("circle")
+                .attr("cx", centerX)
+                .attr("cy", centerY)
+                .attr("r", 2)
+                .attr("fill", "#0a2463");
+            
+            svg.append("text")
+                .attr("x", centerX - 12)
+                .attr("y", centerY + 20)
+                .attr("class", "origin-label")
+                .text("O");
+            
+            // Vecteur i avec flèche très fine
+            svg.append("line")
+                .attr("x1", centerX).attr("y1", centerY)
+                .attr("x2", centerX + 50).attr("y2", centerY)
+                .attr("class", "vector")
+                .attr("marker-end", "url(#very-thin-arrow)");
+            
+            svg.append("text")
+                .attr("x", centerX + 52)
+                .attr("y", centerY + 3)
+                .attr("class", "vector-label")
+                .text("i");
+            
+            // Vecteur j avec flèche très fine
+            svg.append("line")
+                .attr("x1", centerX).attr("y1", centerY)
+                .attr("x2", centerX).attr("y2", centerY - 50)
+                .attr("class", "vector")
+                .attr("marker-end", "url(#very-thin-arrow)");
+            
+            svg.append("text")
+                .attr("x", centerX - 3)
+                .attr("y", centerY - 52)
+                .attr("class", "vector-label")
+                .text("j");
+            
+            // Label du repère
+            svg.append("text")
+                .attr("x", centerX - 35)
+                .attr("y", centerY - 70)
+                .attr("class", "repere-label")
+                .text("(O; i, j)");
+        }
         
-        defs.append("marker")
-            .attr("id", "arrowhead")
-            .attr("markerWidth", 6)
-            .attr("markerHeight", 6)
-            .attr("refX", 5)
-            .attr("refY", 2)
-            .attr("orient", "auto")
-            .append("polygon")
-            .attr("points", "0 0, 6 2, 0 4")
-            .attr("fill", "#999");
+        // Initialiser les éléments interactifs
+        function initInteractiveElements() {
+            // Créer les groupes pour une meilleure organisation
+            const projectionsGroup = svg.append("g").attr("class", "projections");
+            const polarGroup = svg.append("g").attr("class", "polar");
+            const pointGroup = svg.append("g").attr("class", "point");
+            const vectorGroup = svg.append("g").attr("class", "vectors");
+            
+            // Lignes de projection
+            projectionsGroup.append("line").attr("class", "projection-line");
+            projectionsGroup.append("line").attr("class", "projection-line");
+            
+            // Points de projection
+            projectionsGroup.append("circle").attr("class", "projection-point").attr("r", 3);
+            projectionsGroup.append("circle").attr("class", "projection-point").attr("r", 3);
+            
+            // Labels des coordonnées
+            projectionsGroup.append("text").attr("class", "coord-text");
+            projectionsGroup.append("text").attr("class", "coord-text");
+            
+            // Éléments polaires
+            polarGroup.append("path").attr("class", "arc");
+            polarGroup.append("line").attr("class", "radius-line");
+            polarGroup.append("text").attr("class", "radius-text");
+            polarGroup.append("text").attr("class", "angle-text");
+            
+            // Vecteur OM avec flèche très fine (sans étiquette)
+            vectorGroup.append("line")
+                .attr("class", "vector-om")
+                .attr("stroke-width", 2);
+            
+            // Point M et son label
+            pointGroup.append("circle")
+                .attr("class", "point-m")
+                .attr("r", 6)
+                .call(d3.drag()
+                    .on("start", dragStarted)
+                    .on("drag", dragged)
+                    .on("end", dragEnded));
+            
+            pointGroup.append("text")
+                .attr("class", "axis-label")
+                .attr("font-size", "16");
+        }
         
-        defs.append("marker")
-            .attr("id", "arrowhead-red")
-            .attr("markerWidth", 5)
-            .attr("markerHeight", 5)
-            .attr("refX", 4)
-            .attr("refY", 2)
-            .attr("orient", "auto")
-            .append("polygon")
-            .attr("points", "0 0, 5 2, 0 4")
-            .attr("fill", "#c04040");
+        // Fonctions de drag améliorées
+        function dragStarted(event) {
+            d3.select(this).raise().classed("active", true);
+        }
         
-        // Axe des x avec symétrie
-        svg.append("line")
-            .attr("x1", 20).attr("y1", centerY)
-            .attr("x2", width - 20).attr("y2", centerY)
-            .attr("stroke", "#999")
-            .attr("stroke-width", 1.5)
-            .attr("marker-end", "url(#arrowhead)");
+        function dragged(event) {
+            const mouseX = event.x;
+            const mouseY = event.y;
+            
+            // Limites pour garder le point visible
+            const boundedX = Math.max(20, Math.min(svgSize.width - 20, mouseX));
+            const boundedY = Math.max(20, Math.min(svgSize.height - 20, mouseY));
+            
+            const relX = boundedX - centerX;
+            const relY = centerY - boundedY; // Inversé car y croît vers le bas en SVG
+            
+            r = Math.sqrt(relX * relX + relY * relY);
+            let theta = Math.atan2(relY, relX) * 180 / Math.PI;
+            
+            if (theta < 0) theta += 360;
+            
+            // Limites
+            r = Math.max(10, Math.min(180, r));
+            thetaDeg = Math.round(theta * 10) / 10; // Arrondir au dixième
+            
+            updateVisualization();
+        }
         
-        // Axe des y avec symétrie
-        svg.append("line")
-            .attr("x1", centerX).attr("y1", height - 20)
-            .attr("x2", centerX).attr("y2", 20)
-            .attr("stroke", "#999")
-            .attr("stroke-width", 1.5)
-            .attr("marker-end", "url(#arrowhead)");
+        function dragEnded(event) {
+            d3.select(this).classed("active", false);
+        }
         
-        // Labels des axes
-        svg.append("text")
-            .attr("x", width - 25)
-            .attr("y", centerY - 10)
-            .text("x")
-            .attr("font-size", "18px")
-            .attr("fill", "#666");
-        
-        svg.append("text")
-            .attr("x", centerX + 10)
-            .attr("y", 30)
-            .text("y")
-            .attr("font-size", "18px")
-            .attr("fill", "#666");
-        
-        // Origine O
-        svg.append("text")
-            .attr("x", centerX - 15)
-            .attr("y", centerY + 20)
-            .text("O")
-            .attr("font-size", "16px")
-            .attr("fill", "#333")
-            .attr("font-weight", "bold");
-        
-        // Vecteur i de base (rouge fin)
-        svg.append("line")
-            .attr("x1", centerX)
-            .attr("y1", centerY)
-            .attr("x2", centerX + 50)
-            .attr("y2", centerY)
-            .attr("stroke", "#c04040")
-            .attr("stroke-width", 1.5)
-            .attr("marker-end", "url(#arrowhead-red)");
-        
-        svg.append("text")
-            .attr("x", centerX + 25)
-            .attr("y", centerY + 20)
-            .html("&#8407;")
-            .attr("font-size", "16px")
-            .attr("fill", "#c04040")
-            .attr("font-weight", "bold");
-        
-        svg.append("text")
-            .attr("x", centerX + 30)
-            .attr("y", centerY + 20)
-            .text("i")
-            .attr("font-size", "14px")
-            .attr("fill", "#c04040")
-            .attr("font-weight", "bold")
-            .attr("font-style", "italic");
-        
-        // Vecteur j de base (rouge fin)
-        svg.append("line")
-            .attr("x1", centerX)
-            .attr("y1", centerY)
-            .attr("x2", centerX)
-            .attr("y2", centerY - 50)
-            .attr("stroke", "#c04040")
-            .attr("stroke-width", 1.5)
-            .attr("marker-end", "url(#arrowhead-red)");
-        
-        svg.append("text")
-            .attr("x", centerX - 25)
-            .attr("y", centerY - 20)
-            .html("&#8407;")
-            .attr("font-size", "16px")
-            .attr("fill", "#c04040")
-            .attr("font-weight", "bold");
-        
-        svg.append("text")
-            .attr("x", centerX - 20)
-            .attr("y", centerY - 20)
-            .text("j")
-            .attr("font-size", "14px")
-            .attr("fill", "#c04040")
-            .attr("font-weight", "bold")
-            .attr("font-style", "italic");
-        
-        // Lignes de projection en pointillés (seront mises à jour)
-        const projectionX = svg.append("line")
-            .attr("stroke", "#999")
-            .attr("stroke-width", 1)
-            .attr("stroke-dasharray", "4,4");
-        
-        const projectionY = svg.append("line")
-            .attr("stroke", "#999")
-            .attr("stroke-width", 1)
-            .attr("stroke-dasharray", "4,4");
-        
-        // Points de projection sur les axes
-        const projPointX = svg.append("circle")
-            .attr("r", 4)
-            .attr("fill", "#7850a0");
-        
-        const projPointY = svg.append("circle")
-            .attr("r", 4)
-            .attr("fill", "#7850a0");
-        
-        // Labels des coordonnées sur les axes
-        const xCoordLabel = svg.append("text")
-            .attr("font-size", "14px")
-            .attr("fill", "#7850a0")
-            .attr("font-weight", "bold");
-        
-        const yCoordLabel = svg.append("text")
-            .attr("font-size", "14px")
-            .attr("fill", "#7850a0")
-            .attr("font-weight", "bold");
-        
-        // Arc d'angle
-        const arcPath = svg.append("path")
-            .attr("fill", "none")
-            .attr("stroke", "#c04040")
-            .attr("stroke-width", 2);
-        
-        // Ligne OM (rayon) - SANS FLÈCHE
-        const radiusLine = svg.append("line")
-            .attr("stroke", "#c04040")
-            .attr("stroke-width", 2);
-        
-        // Label du rayon
-        const radiusLabel = svg.append("text")
-            .attr("fill", "#c04040")
-            .attr("font-size", "14px")
-            .attr("font-weight", "bold");
-        
-        // Label de l'angle
-        const angleLabel = svg.append("text")
-            .attr("fill", "#c04040")
-            .attr("font-size", "16px")
-            .attr("font-style", "italic")
-            .attr("font-weight", "bold");
-        
-        // Point M
-        const pointM = svg.append("circle")
-            .attr("r", 8)
-            .attr("fill", "#333")
-            .attr("class", "draggable")
-            .style("cursor", "move");
-        
-        const labelM = svg.append("text")
-            .attr("font-size", "16px")
-            .attr("fill", "#333")
-            .attr("font-weight", "bold");
-        
-        // Fonction de mise à jour
-        function updateVisualization(r, thetaDeg) {
+        // Mettre à jour la visualisation
+        function updateVisualization() {
             const thetaRad = thetaDeg * Math.PI / 180;
             const x = r * Math.cos(thetaRad);
             const y = r * Math.sin(thetaRad);
             
             const pointX = centerX + x;
-            const pointY = centerY - y;
+            const pointY = centerY - y; // Inversé car y croît vers le bas en SVG
             
-            // Mise à jour du point M
-            pointM.attr("cx", pointX).attr("cy", pointY);
-            labelM.attr("x", pointX + 12).attr("y", pointY - 12).text("M");
+            // Point M
+            svg.select(".point-m")
+                .attr("cx", pointX)
+                .attr("cy", pointY);
             
-            // Mise à jour du rayon (sans flèche)
-            radiusLine
+            svg.select(".point-m + text")
+                .attr("x", pointX + 12)
+                .attr("y", pointY - 12)
+                .text("M");
+            
+            // Vecteur OM (sans étiquette comme demandé)
+            svg.select(".vector-om")
+                .attr("x1", centerX).attr("y1", centerY)
+                .attr("x2", pointX).attr("y2", pointY);
+            
+            // Rayon OM (ligne sans flèche pour le rayon polaire)
+            svg.select(".radius-line")
                 .attr("x1", centerX).attr("y1", centerY)
                 .attr("x2", pointX).attr("y2", pointY);
             
             // Label du rayon
-            radiusLabel
-                .attr("x", centerX + x * 0.4 - 15)
-                .attr("y", centerY - y * 0.4 - 5)
-                .text(`r = ${r.toFixed(0)}`);
+            const midX = centerX + x * 0.4;
+            const midY = centerY - y * 0.4;
+            svg.select(".radius-text")
+                .attr("x", midX - 15)
+                .attr("y", midY - 8)
+                .text(`r = ${r.toFixed(1)}`);
             
-            // Mise à jour de l'arc
-            const arcRadius = 50;
+            // Arc d'angle
+            const arcRadius = Math.min(45, r * 0.25);
             const largeArcFlag = Math.abs(thetaDeg) > 180 ? 1 : 0;
             const sweepFlag = thetaDeg >= 0 ? 0 : 1;
             
@@ -459,75 +1063,66 @@
                 `A ${arcRadius} ${arcRadius} 0 ${largeArcFlag} ${sweepFlag} ${endX} ${endY}`
             ].join(' ');
             
-            arcPath.attr("d", arcPathData);
+            svg.select(".arc").attr("d", arcPathData);
             
             // Label de l'angle
             const labelAngle = thetaDeg / 2;
             const labelRad = labelAngle * Math.PI / 180;
-            const labelDistance = 65;
-            angleLabel
+            const labelDistance = arcRadius + 15;
+            svg.select(".angle-text")
                 .attr("x", centerX + labelDistance * Math.cos(labelRad))
                 .attr("y", centerY - labelDistance * Math.sin(labelRad) + 5)
-                .text(`θ = ${thetaDeg.toFixed(0)}°`);
+                .text(`θ = ${thetaDeg.toFixed(1)}°`);
             
             // Projections sur les axes
-            projectionX
-                .attr("x1", pointX).attr("y1", pointY)
-                .attr("x2", pointX).attr("y2", centerY);
+            const projections = svg.selectAll(".projection-line");
+            projections.nodes()[0].setAttribute("x1", pointX);
+            projections.nodes()[0].setAttribute("y1", pointY);
+            projections.nodes()[0].setAttribute("x2", pointX);
+            projections.nodes()[0].setAttribute("y2", centerY);
             
-            projectionY
-                .attr("x1", pointX).attr("y1", pointY)
-                .attr("x2", centerX).attr("y2", pointY);
+            projections.nodes()[1].setAttribute("x1", pointX);
+            projections.nodes()[1].setAttribute("y1", pointY);
+            projections.nodes()[1].setAttribute("x2", centerX);
+            projections.nodes()[1].setAttribute("y2", pointY);
             
             // Points de projection
-            projPointX
-                .attr("cx", pointX)
-                .attr("cy", centerY);
+            const projPoints = svg.selectAll(".projection-point");
+            projPoints.nodes()[0].setAttribute("cx", pointX);
+            projPoints.nodes()[0].setAttribute("cy", centerY);
+            projPoints.nodes()[1].setAttribute("cx", centerX);
+            projPoints.nodes()[1].setAttribute("cy", pointY);
             
-            projPointY
-                .attr("cx", centerX)
-                .attr("cy", pointY);
+            // Labels des coordonnées
+            const coordTexts = svg.selectAll(".coord-text");
+            coordTexts.nodes()[0].setAttribute("x", pointX - 20);
+            coordTexts.nodes()[0].setAttribute("y", centerY + 20);
+            coordTexts.nodes()[0].textContent = `x = ${x.toFixed(1)}`;
             
-            // Labels des coordonnées sur les axes
-            xCoordLabel
-                .attr("x", pointX - 25)
-                .attr("y", centerY + 20)
-                .text(`x = ${x.toFixed(1)}`);
+            coordTexts.nodes()[1].setAttribute("x", centerX + 12);
+            coordTexts.nodes()[1].setAttribute("y", pointY - 8);
+            coordTexts.nodes()[1].textContent = `y = ${y.toFixed(1)}`;
             
-            yCoordLabel
-                .attr("x", centerX + 10)
-                .attr("y", pointY - 10)
-                .text(`y = ${y.toFixed(1)}`);
+            // Calculer aussi en radians pour l'affichage optionnel
+            const thetaRadValue = thetaDeg * Math.PI / 180;
+            
+            // Mise à jour des affichages
+            document.getElementById('cartesian-coords').textContent = `(${x.toFixed(2)}, ${y.toFixed(2)})`;
+            document.getElementById('polar-coords').textContent = `(${r.toFixed(2)}, ${thetaDeg.toFixed(1)}°)`;
+            document.getElementById('vector-coords').textContent = `(${x.toFixed(2)}, ${y.toFixed(2)})`;
         }
         
-        // Gestion du drag pour le point M
-        const dragPointM = d3.drag()
-            .on("drag", function(event) {
-                // Coordonnées de la souris
-                const mouseX = event.x;
-                const mouseY = event.y;
-                
-                // Calculer les coordonnées relatives à l'origine O
-                const relX = mouseX - centerX;
-                const relY = centerY - mouseY;
-                
-                // Calculer r et θ
-                const r = Math.sqrt(relX * relX + relY * relY);
-                let theta = Math.atan2(relY, relX) * 180 / Math.PI;
-                
-                // Normaliser θ entre 0 et 360 degrés
-                if (theta < 0) theta += 360;
-                
-                // Limiter r entre 0 et 200
-                const limitedR = Math.max(0, Math.min(200, r));
-                
-                requestAnimationFrame(() => updateVisualization(limitedR, theta));
-            });
-        
-        pointM.call(dragPointM);
-        
         // Initialisation
-        updateVisualization(150, 40);
+        function init() {
+            initSVG();
+            updateVisualization();
+        }
+        
+        // Redimensionnement
+        window.addEventListener('resize', init);
+        
+        // Initialiser quand la page est chargée
+        document.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
 </html>
